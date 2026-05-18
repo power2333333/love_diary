@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  --color-beige-50: #fefdfb;
+  --color-beige-100: #fdf9f1;
+  --color-beige-200: #faf0dd;
+  --color-beige-300: #f5e4c4;
+  --color-beige-400: #eed4a8;
+  --color-beige-500: #e5c48c;
+  --color-beige-600: #d4a96a;
+  --color-beige-700: #b8894a;
+  --color-beige-800: #9a6e3a;
+  --color-beige-900: #7d5a31;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-beige-100);
+  font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
+}
+
+#root {
+  min-height: 100dvh;
+}

@@ -33,7 +33,7 @@ function GuestRoute({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <BrowserRouter basename="/love_diary">
+    <BrowserRouter>
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />

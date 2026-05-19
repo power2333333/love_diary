@@ -15,10 +15,106 @@
 
 body {
   margin: 0;
-  background-color: var(--color-beige-100);
+  background:
+    linear-gradient(180deg, #fefdfb 0%, #fdf9f1 30%, #faf0dd 70%, #f5e4c4 100%) fixed,
+    repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(179, 133, 70, 0.08) 1px, rgba(179, 133, 70, 0.08) 2px),
+    repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(179, 133, 70, 0.06) 1px, rgba(179, 133, 70, 0.06) 2px),
+    radial-gradient(circle at 50% 50%, rgba(212, 165, 100, 0.18) 1px, transparent 1.2px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 12px 12px;
   font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
+  scroll-behavior: smooth;
+}
+
+/* 全局过渡 */
+a, button {
+  transition: all 0.2s ease;
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+input:focus, textarea:focus {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* B: 角落装饰 */
+body::before {
+  content: '';
+  position: fixed;
+  top: -80px;
+  right: -60px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle at center, rgba(228, 196, 140, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -100px;
+  left: -80px;
+  width: 340px;
+  height: 340px;
+  background: radial-gradient(circle at center, rgba(228, 196, 140, 0.25) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
 }
 
 #root {
   min-height: 100dvh;
+  position: relative;
+  z-index: 1;
+}
+
+/* 页面淡入动画 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.page-enter {
+  animation: fadeIn 0.35s ease-out;
+}
+
+/* 纪念日数字微动 */
+@keyframes gentlePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+.anniversary-number {
+  animation: gentlePulse 3s ease-in-out 3;
+  animation-delay: 0.5s;
+}
+
+/* 时间轴条目逐条淡入 */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.timeline-item {
+  animation: slideUp 0.4s ease-out both;
+}
+
+/* 纸张质感 */
+.paper-card {
+  box-shadow:
+    0 1px 2px rgba(157, 110, 58, 0.08),
+    0 3px 6px rgba(157, 110, 58, 0.06),
+    0 6px 16px rgba(157, 110, 58, 0.04);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.paper-card:hover {
+  box-shadow:
+    0 2px 4px rgba(157, 110, 58, 0.12),
+    0 6px 12px rgba(157, 110, 58, 0.08),
+    0 12px 24px rgba(157, 110, 58, 0.06);
+  transform: translateY(-1px);
 }

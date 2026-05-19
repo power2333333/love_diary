@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
+import NavBar from '../components/NavBar'
 
 export default function Write() {
   const { user, profile } = useAuth()
@@ -9,7 +10,8 @@ export default function Write() {
   const [searchParams] = useSearchParams()
   const editId = searchParams.get('edit')
 
-  const today = new Date().toISOString().slice(0, 10)
+  const now = new Date()
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
   const [diaryDate, setDiaryDate] = useState(today)
   const [content, setContent] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -67,27 +69,25 @@ export default function Write() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-beige-100 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <p className="text-beige-500">加载中...</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-beige-100">
-      <div className="max-w-2xl mx-auto px-4 py-6">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-xl font-bold text-beige-800">
-            {editId ? '编辑日记' : '写日记'}
-          </h1>
+    <div className="min-h-screen">
+      <NavBar
+        center={<span className="font-semibold">{editId ? '编辑日记' : '写日记'}</span>}
+        right={
           <button
             onClick={() => navigate(editId ? `/diary/${editId}` : '/')}
             className="text-beige-600 hover:text-beige-800 text-sm transition-colors"
-          >
-            返回
-          </button>
-        </div>
+          >返回</button>
+        }
+      />
 
+      <div className="page-enter max-w-3xl mx-auto px-4 py-8">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-beige-700 text-sm mb-1">日期</label>

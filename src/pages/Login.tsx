@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Login() {
@@ -21,9 +21,10 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-beige-100 flex items-center justify-center p-4">
-      <div className="bg-beige-50 rounded-2xl shadow-lg p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-beige-800 text-center mb-6">登录</h1>
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="page-enter bg-beige-50 rounded-2xl paper-card p-8 w-full max-w-md">
+        <h1 className="text-2xl font-bold text-beige-800 text-center mb-2">我们的日记</h1>
+        <p className="text-beige-500 text-sm text-center mb-6">记录属于我们的每一天</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -51,9 +52,7 @@ export default function Login() {
           </div>
 
           {error && (
-            <div className="bg-red-50 text-red-600 text-sm rounded-lg p-3">
-              {error}
-            </div>
+            <div className="bg-red-50 text-red-600 text-sm rounded-lg p-3">{error}</div>
           )}
 
           <button
@@ -64,10 +63,6 @@ export default function Login() {
             {submitting ? '登录中...' : '登录'}
           </button>
         </form>
-
-        <p className="text-beige-600 text-sm text-center mt-4">
-          没有账号？<Link to="/register" className="text-beige-800 underline">去注册</Link>
-        </p>
       </div>
     </div>
   )

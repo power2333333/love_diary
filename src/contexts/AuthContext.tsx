@@ -66,12 +66,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (error) return { error: error.message }
     if (!data.user) return { error: '注册失败，请重试' }
 
-    // 注册后手动登录一次，确保 session 生效
     await supabase.auth.signInWithPassword({ email, password })
 
-    const { error: profileError } = await supabase
-      .from('profiles')
-      .insert({ id: data.user.id, nickname, gender, color })
+    const { error: profileError } = await supabase.rpc('create_profile', {
+      user_id: data.user.id,
+      user_nickname: nickname,
+      user_gender: gender,
+      user_color: color,
+    })
 
     if (profileError) return { error: profileError.message }
     return {}

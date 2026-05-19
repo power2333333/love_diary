@@ -32,7 +32,7 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen bg-beige-100 flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <div className="bg-beige-50 rounded-2xl shadow-lg p-8 w-full max-w-md">
         <h1 className="text-2xl font-bold text-beige-800 text-center mb-6">注册账号</h1>
 

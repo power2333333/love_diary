@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
+import NavBar from '../components/NavBar'
 
 interface DiaryEntry {
   id: number
@@ -28,26 +29,20 @@ export default function DayDetail() {
 
   useEffect(() => {
     async function fetchData() {
-      const { data: diaryData } = await supabase
-        .from('diaries')
-        .select('*')
-        .eq('diary_date', date)
-        .order('created_at', { ascending: true })
+      const [diaryRes, profileRes] = await Promise.all([
+        supabase.from('diaries').select('*').eq('diary_date', date).order('created_at', { ascending: true }),
+        supabase.from('profiles').select('*'),
+      ])
 
-      if (diaryData && diaryData.length > 0) {
-        setEntries(diaryData)
-        const ids = [...new Set(diaryData.map((d) => d.user_id))]
-        const { data: profileData } = await supabase
-          .from('profiles')
-          .select('*')
-          .in('id', ids)
-        if (profileData) {
-          const map: Record<string, Profile> = {}
-          profileData.forEach((p) => {
-            map[p.id] = p as Profile
-          })
-          setProfiles(map)
-        }
+      if (diaryRes.data) {
+        setEntries(diaryRes.data)
+      }
+      if (profileRes.data) {
+        const map: Record<string, Profile> = {}
+        profileRes.data.forEach((p) => {
+          map[p.id] = p as Profile
+        })
+        setProfiles(map)
       }
       setLoading(false)
     }
@@ -56,32 +51,25 @@ export default function DayDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-beige-100 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <p className="text-beige-500">加载中...</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-beige-100">
-      <div className="max-w-2xl mx-auto px-4 py-6">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-xl font-bold text-beige-800">{date}</h1>
-          <div className="flex gap-2">
-            <Link
-              to={`/write?date=${date}`}
-              className="px-4 py-2 rounded-lg bg-beige-700 hover:bg-beige-800 text-white text-sm transition-colors"
-            >
-              补一篇
-            </Link>
-            <button
-              onClick={() => navigate('/')}
-              className="text-beige-600 hover:text-beige-800 text-sm transition-colors"
-            >
-              返回
-            </button>
-          </div>
-        </div>
+    <div className="min-h-screen">
+      <NavBar
+        center={<span className="font-semibold">{date}</span>}
+        left={
+          <button onClick={() => navigate('/')} className="text-beige-600 hover:text-beige-800 text-sm transition-colors">← 返回</button>
+        }
+        right={
+          <Link to={`/write?date=${date}`} className="px-3 py-1.5 rounded-lg bg-beige-700 hover:bg-beige-800 text-white text-xs transition-colors">补一篇</Link>
+        }
+      />
+
+      <div className="page-enter max-w-3xl mx-auto px-4 py-8">
 
         {entries.length === 0 ? (
           <div className="text-center py-20">
@@ -102,7 +90,7 @@ export default function DayDetail() {
               return (
                 <div
                   key={entry.id}
-                  className="rounded-xl p-5 shadow-sm"
+                  className="rounded-xl p-5 paper-card"
                   style={{ backgroundColor: color }}
                 >
                   <div className="flex justify-between items-center mb-2">

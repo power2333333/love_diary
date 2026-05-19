@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
+import NavBar from '../components/NavBar'
 
 interface DiaryEntry {
   id: number
@@ -51,7 +52,7 @@ export default function SingleDiary() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-beige-100 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <p className="text-beige-500">加载中...</p>
       </div>
     )
@@ -59,7 +60,7 @@ export default function SingleDiary() {
 
   if (!entry) {
     return (
-      <div className="min-h-screen bg-beige-100 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <p className="text-beige-500">日记不存在</p>
       </div>
     )
@@ -68,30 +69,23 @@ export default function SingleDiary() {
   const isMine = entry.user_id === user?.id
 
   return (
-    <div className="min-h-screen bg-beige-100">
-      <div className="max-w-2xl mx-auto px-4 py-6">
-        <div className="flex items-center justify-between mb-6">
-          <button
-            onClick={() => navigate(`/day/${entry.diary_date}`)}
-            className="text-beige-600 hover:text-beige-800 text-sm transition-colors"
-          >
-            ← 返回
-          </button>
-          <div className="flex gap-3 items-center">
-            <span className="text-beige-600 text-sm">{entry.diary_date}</span>
-            {isMine && (
-              <Link
-                to={`/write?edit=${entry.id}`}
-                className="px-3 py-1.5 rounded-lg bg-beige-200 hover:bg-beige-300 text-beige-700 text-sm transition-colors"
-              >
-                编辑
-              </Link>
-            )}
-          </div>
-        </div>
+    <div className="min-h-screen">
+      <NavBar
+        center={<span className="text-beige-600 text-sm">{entry.diary_date}</span>}
+        left={
+          <button onClick={() => navigate(`/day/${entry.diary_date}`)} className="text-beige-600 hover:text-beige-800 text-sm transition-colors">← 返回</button>
+        }
+        right={
+          isMine ? (
+            <Link to={`/write?edit=${entry.id}`} className="px-3 py-1.5 rounded-lg bg-beige-200 hover:bg-beige-300 text-beige-700 text-xs transition-colors">编辑</Link>
+          ) : undefined
+        }
+      />
+
+      <div className="page-enter max-w-3xl mx-auto px-4 py-8">
 
         <div
-          className="rounded-2xl p-6 shadow-sm"
+          className="rounded-2xl p-6 paper-card"
           style={{ backgroundColor: entry.color }}
         >
           <div className="mb-4">

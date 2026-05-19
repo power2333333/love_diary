@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
+import NavBar from '../components/NavBar'
 
 const PRESET_COLORS = [
   { label: '淡粉', value: '#FFE4E1' },
@@ -13,7 +14,7 @@ const PRESET_COLORS = [
 ]
 
 export default function Settings() {
-  const { profile, refreshProfile } = useAuth()
+  const { profile, refreshProfile, signOut } = useAuth()
   const navigate = useNavigate()
   const [nickname, setNickname] = useState(profile?.nickname || '')
   const [color, setColor] = useState(profile?.color || '#FFE4E1')
@@ -40,19 +41,16 @@ export default function Settings() {
   }
 
   return (
-    <div className="min-h-screen bg-beige-100">
-      <div className="max-w-2xl mx-auto px-4 py-6">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-xl font-bold text-beige-800">设置</h1>
-          <button
-            onClick={() => navigate('/')}
-            className="text-beige-600 hover:text-beige-800 text-sm transition-colors"
-          >
-            返回
-          </button>
-        </div>
+    <div className="min-h-screen">
+      <NavBar
+        center={<span className="font-semibold">设置</span>}
+        right={
+          <button onClick={() => navigate('/')} className="text-beige-600 hover:text-beige-800 text-sm transition-colors">返回</button>
+        }
+      />
 
-        <div className="bg-beige-50 rounded-2xl shadow-sm p-6 space-y-5">
+      <div className="page-enter max-w-3xl mx-auto px-4 py-8">
+        <div className="bg-beige-50 rounded-2xl paper-card p-6 space-y-5">
           <div>
             <label className="block text-beige-700 text-sm mb-1">昵称</label>
             <input
@@ -95,6 +93,23 @@ export default function Settings() {
             />
           </div>
 
+          {/* 预览卡片 */}
+          <div>
+            <label className="block text-beige-700 text-sm mb-2">预览效果</label>
+            <div
+              className="rounded-xl p-4 transition-colors duration-300"
+              style={{ backgroundColor: color }}
+            >
+              <div className="flex justify-between items-center mb-2">
+                <span className="font-medium text-beige-800 text-sm">{nickname || '你的昵称'}</span>
+                <span className="text-beige-600 text-xs">12:00</span>
+              </div>
+              <p className="text-beige-800 text-sm leading-relaxed">
+                这是日记卡片的预览效果。改颜色后这里会实时变化，帮助你选择最喜欢的颜色。
+              </p>
+            </div>
+          </div>
+
           {message && (
             <div
               className={`text-sm rounded-lg p-3 ${
@@ -113,6 +128,13 @@ export default function Settings() {
             className="w-full py-3 rounded-lg bg-beige-700 hover:bg-beige-800 text-white font-medium transition-colors disabled:opacity-50"
           >
             {saving ? '保存中...' : '保存'}
+          </button>
+
+          <button
+            onClick={signOut}
+            className="w-full py-2.5 rounded-lg text-beige-500 hover:text-beige-700 hover:bg-beige-200 text-sm transition-colors"
+          >
+            退出登录
           </button>
         </div>
       </div>

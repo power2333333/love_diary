@@ -32,11 +32,12 @@
 
 ```
 src/
-├── components/    ← Calendar, NavBar, OnThisDay
+├── components/    ← Calendar, FoodCard, NavBar, OnThisDay, StarRating, StatsCard
 ├── contexts/      ← AuthContext
 ├── lib/           ← supabase 客户端
-├── pages/         ← Home, Login, Write, DayDetail, SingleDiary, Settings
-├── App.tsx        ← 路由配置（React.lazy + BrowserRouter basename）
+├── pages/         ← Home, Login, Write, DayDetail, SingleDiary, Settings, Search, FoodWrite
+├── App.tsx        ← 路由配置（Login 直接加载，其余 React.lazy）
+├── ProtectedApp.tsx ← 受保护路由 + AuthProvider
 ├── main.tsx       ← 入口
 └── index.css      ← 全局样式、动画、纹理
 ```

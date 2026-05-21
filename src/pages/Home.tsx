@@ -1,10 +1,21 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+
+// 预加载页面组件（鼠标悬停时提前下载）
+const prefetch = (path: string) => {
+  const link = document.createElement('link')
+  link.rel = 'prefetch'
+  link.as = 'document'
+  link.href = path
+  document.head.appendChild(link)
+}
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 import NavBar from '../components/NavBar'
 import Calendar from '../components/Calendar'
 import OnThisDay from '../components/OnThisDay'
+import StatsCard from '../components/StatsCard'
+import FoodCard from '../components/FoodCard'
 
 interface DiaryDate {
   diary_date: string
@@ -58,29 +69,36 @@ export default function Home() {
         center={<span className="text-beige-800 font-semibold">我们的日记</span>}
         right={
           <>
-            <Link to="/write" className="px-3 py-1.5 rounded-lg bg-beige-700 hover:bg-beige-800 text-white text-xs font-medium transition-colors">写日记</Link>
-            <Link to="/settings" className="px-3 py-1.5 rounded-lg bg-beige-200 hover:bg-beige-300 text-beige-700 text-xs transition-colors">设置</Link>
+            <Link to="/search" onMouseEnter={() => prefetch('/search')} className="px-3 py-1.5 rounded-lg hover:bg-beige-200 text-beige-600 text-xs transition-colors">搜索</Link>
+            <Link to="/write" onMouseEnter={() => prefetch('/write')} className="px-3 py-1.5 rounded-lg bg-beige-700 hover:bg-beige-800 text-white text-xs font-medium transition-colors">写日记</Link>
+            <Link to="/settings" onMouseEnter={() => prefetch('/settings')} className="px-3 py-1.5 rounded-lg bg-beige-200 hover:bg-beige-300 text-beige-700 text-xs transition-colors">设置</Link>
           </>
         }
       />
 
       {/* 左上角浮动月历 */}
-      <div className="fixed left-4 top-20 z-20 w-72 hidden md:block" style={{ animation: 'fadeIn 0.35s ease-out' }}>
+      <div className="fixed left-4 top-20 z-20 w-80 hidden md:block" style={{ animation: 'fadeIn 0.35s ease-out' }}>
         <Calendar diaryDates={new Set(dates.map((d) => d.diary_date))} />
       </div>
 
       {/* 左下角那年今日 */}
       <OnThisDay />
 
+      {/* 左下角数据统计 */}
+      <StatsCard />
+
+      {/* 右侧美食记录 */}
+      <FoodCard />
+
       <div className="page-enter max-w-3xl mx-auto px-4 py-8 relative">
 
         {/* 纪念日卡片 */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-beige-200 via-beige-100 to-beige-300 py-6 px-8 mb-10 shadow-sm">
-          <div className="absolute top-2 right-3 text-5xl opacity-20 select-none">💕</div>
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-beige-200 via-beige-100 to-beige-300 py-5 sm:py-6 px-5 sm:px-8 mb-8 sm:mb-10 shadow-sm">
+          <div className="absolute top-2 right-3 text-3xl sm:text-5xl opacity-20 select-none">💕</div>
           <div className="relative">
-            <p className="text-beige-700 text-sm tracking-wider">我们已经在一起</p>
-            <p className="anniversary-number text-beige-800 text-5xl font-bold my-2 tracking-tight">{daysTogether}</p>
-            <p className="text-beige-700 text-sm">天</p>
+            <p className="text-beige-700 text-xs sm:text-sm tracking-wider">我们已经在一起</p>
+            <p className="anniversary-number text-beige-800 text-3xl sm:text-5xl font-bold my-1 sm:my-2 tracking-tight">{daysTogether}</p>
+            <p className="text-beige-700 text-xs sm:text-sm">天</p>
           </div>
         </div>
 
@@ -93,7 +111,7 @@ export default function Home() {
             <Link to="/write" className="inline-block px-6 py-2.5 rounded-lg bg-beige-700 hover:bg-beige-800 text-white transition-colors">写第一篇</Link>
           </div>
         ) : (
-          <div className="relative pl-10">
+          <div className="relative pl-7 sm:pl-10">
             {/* 时间轴装饰 */}
             {[
               { top: '2%', left: 8, emoji: '✨', size: 16, opacity: 0.35 },
@@ -135,7 +153,7 @@ export default function Home() {
                     className="block bg-beige-50/80 hover:bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-4 group-hover:-translate-y-0.5"
                   >
                     <div className="flex justify-between items-center">
-                      <span className="text-beige-800 font-medium">{formatDateCN(d.diary_date)}</span>
+                      <span className="text-beige-800 font-medium text-xs sm:text-base">{formatDateCN(d.diary_date)}</span>
                       <span className="text-beige-500 text-sm bg-beige-200 rounded-full px-3 py-0.5">{d.count} 篇</span>
                     </div>
                   </Link>

@@ -51,7 +51,7 @@ export default function OnThisDay() {
 
   return (
     <div
-      className="fixed left-4 bottom-4 z-20 w-72 hidden md:block bg-beige-200/90 rounded-xl paper-card p-4 border border-beige-400/40"
+      className="fixed left-4 bottom-[170px] z-20 w-80 hidden md:block bg-beige-200/90 rounded-xl paper-card p-4 border border-beige-400/40"
       style={{ animation: 'fadeIn 0.35s ease-out' }}
     >
       <p className="text-beige-600 text-xs mb-1">📅 那年今日</p>

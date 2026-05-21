@@ -63,7 +63,7 @@ export default function Settings() {
 
           <div>
             <label className="block text-beige-700 text-sm mb-2">日记代表色</label>
-            <div className="grid grid-cols-6 gap-3">
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
               {PRESET_COLORS.map((c) => (
                 <button
                   key={c.value}

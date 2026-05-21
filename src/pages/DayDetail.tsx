@@ -82,7 +82,7 @@ export default function DayDetail() {
             </Link>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {entries.map((entry) => {
               const isMine = entry.user_id === user?.id
               const profile = profiles[entry.user_id]
@@ -90,7 +90,7 @@ export default function DayDetail() {
               return (
                 <div
                   key={entry.id}
-                  className="rounded-xl p-5 paper-card"
+                  className="rounded-xl p-4 sm:p-5 paper-card"
                   style={{ backgroundColor: color }}
                 >
                   <div className="flex justify-between items-center mb-2">

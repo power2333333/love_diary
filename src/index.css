@@ -23,6 +23,7 @@ body {
   background-size: 100% 100%, 100% 100%, 100% 100%, 12px 12px;
   font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
   scroll-behavior: smooth;
+  font-size: 17px;
 }
 
 /* 全局过渡 */

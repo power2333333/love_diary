@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
 
 export default function Login() {
-  const { signIn } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -14,10 +12,21 @@ export default function Login() {
     e.preventDefault()
     setError('')
     setSubmitting(true)
-    const { error: err } = await signIn(email, password)
-    if (err) setError(err)
-    else navigate('/')
-    setSubmitting(false)
+
+    try {
+      const { createClient } = await import('@supabase/supabase-js')
+      const supabase = createClient(
+        import.meta.env.VITE_SUPABASE_URL,
+        import.meta.env.VITE_SUPABASE_ANON_KEY
+      )
+      const { error: err } = await supabase.auth.signInWithPassword({ email, password })
+      if (err) setError(err.message)
+      else navigate('/')
+    } catch {
+      setError('登录失败，请重试')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
